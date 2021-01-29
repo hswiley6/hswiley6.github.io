@@ -6,7 +6,7 @@
   <style>
 
 .timer {
-  width: 90%;
+  width: 94%;
   background-color: #dddddd;
   border: 3;
   color: black;
@@ -45,7 +45,7 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: normal;
   margin: 4px 2px;
   cursor: pointer;
@@ -53,7 +53,7 @@
   border-width: thin; 
 }
 
-.button1 {background-color: #88ff88; width: 75%; font-weight: bold; border-width: thick;}
+.button1 {background-color: #88ff88; width: 75%; font-size: 40px; font-weight: bold; border-width: thick;}
 .button2 {background-color: #aaaaff; width: 45%;}
 .button3 {float:right; font-size: 24px; padding: 2px; margin: 0px 0px; }
 .active {font-weight: bold; border-width: thick;}
@@ -62,7 +62,7 @@
 </head>
 
 <body onload="initialize()">
-<div class = "timer">SCIENCE BOWL TIMER<br><br>
+<div class = "timer">REGIONAL SCIENCE BOWL TIMER<br><br>
   <div class = "time_window" id="time_display">7.0</div>
   <br><br>
   <button class = "button button1" id="startstop_button" onclick="startStop()">START</button>
@@ -89,10 +89,10 @@ var soundOn = false;
 
 audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 
-var frequency = 768;
-var type = 'square';
-var volume = 0.1;
-var duration = 300; //ms
+//var frequency = 768;
+//var type = 'square';
+//var volume = 0.1;
+//var duration = 300; //ms
 
 function initialize() {
    setQuestionMode(TOSSUP);
