@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>UTRGV Science Bowl</title>
+  <style>
+
+.timer {
+  width: 90%;
+  background-color: #dddddd;
+  border: 3;
+  color: black;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 36px;
+  font-weight: bold;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-style: solid;
+  border-radius: 6px;
+}  
+  
+.time_window {
+  border: 3;
+  background-color: white;
+  width: 50%;
+  color: black;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 120px;
+  font-weight: bold;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-style: solid;
+}  
+  
+  
+.button {
+  color: black;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 24px;
+  font-weight: normal;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-style: outset;
+  border-width: thin; 
+}
+
+.button1 {background-color: #88ff88; width: 75%; font-weight: bold; border-width: thick;}
+.button2 {background-color: #aaaaff; width: 45%;}
+.button3 {float:right; font-size: 24px; padding: 2px; margin: 0px 0px; }
+.active {font-weight: bold; border-width: thick;}
+
+</style>
+</head>
+
+<body onload="initialize()">
+<div class = "timer">SCIENCE BOWL TIMER<br><br>
+  <div class = "time_window" id="time_display">7.0</div>
+  <br><br>
+  <button class = "button button1" id="startstop_button" onclick="startStop()">START</button>
+  <br><br>
+  <button class = "button button2" onclick="setQuestionMode(TOSSUP)" id="qbutton0">TOSSUP</button>
+  <button class = "button button2" onclick="setQuestionMode(BONUS)" id="qbutton1">BONUS</button>
+  <br><button class = "button button3" id="soundButton" onclick="setSoundMode(!soundOn)">&#x1F50A</button>
+</div>  
+<script>
+// Global variables
+var STOPPED = 0;
+var COUNTING = 1;
+var timerMode = STOPPED;
+var TOSSUP = 0;
+var BONUS = 1;
+var qTime = [7.0, 22.0];
+var questionMode = TOSSUP;
+var tossupTime = 7.0;
+var bonusTime = 22.0;
+var timeLeft = tossupTime;
+var endTime = 0.0;
+var timerInterrupt;
+var soundOn = false;
+
+audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+
+var frequency = 768;
+var type = 'square';
+var volume = 0.1;
+var duration = 300; //ms
+
+function initialize() {
+   setQuestionMode(TOSSUP);
+   setSoundMode(false);
+}
+function setSoundMode(mode) {
+   if (mode) {
+      document.getElementById("soundButton").innerHTML = '&#x1F50A';
+	  soundOn = true;
+   } else {
+      document.getElementById("soundButton").innerHTML = '&#x1F507';
+	  soundOn = false;  
+   }
+}
+
+function beep(freq, shape, vol, dur) {
+  var oscillator = audioCtx.createOscillator();
+  var gainNode = audioCtx.createGain();
+
+  oscillator.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+
+  gainNode.gain.value = vol;
+  oscillator.frequency.value = freq;
+  oscillator.type = shape;
+
+  oscillator.start();
+
+  setTimeout(
+    function() {
+      oscillator.stop();
+    },
+    dur
+  );
+};
+function setQuestionMode(qm) {
+   if (timerMode == STOPPED) {
+      questionMode = qm;
+	  document.getElementById("qbutton"+(1-qm)).className = document.getElementById("qbutton"+(1-qm)).className.replace(" active", "");
+	  document.getElementById("qbutton"+qm).className += " active";
+	  timeLeft = qTime[qm];
+	  changeLabel('START');
+	  displayTime();
+   }
+}
+
+function countdown() {
+   timeLeft = endTime - Date.now() / 1000;
+   if (timeLeft <= 0) {
+      timeLeft = 0.0;
+	  clearInterval(timerInterrupt);
+	  timerMode = STOPPED;
+	  if (soundOn) {beep(768, 'square', 0.1, 300);}
+	  changeLabel('RESET');
+   }	  
+   displayTime();  
+} 
+
+function displayTime() {
+   if (timeLeft <= 5.0) {document.getElementById("time_display").style.backgroundColor = "red";}
+   else {document.getElementById("time_display").style.backgroundColor = "white";}
+   document.getElementById("time_display").innerHTML = timeLeft.toFixed(1);
+}
+
+function changeLabel(newLabel) {
+   document.getElementById("startstop_button").innerHTML = newLabel;
+}
+
+function startStop() {
+   if (timerMode == STOPPED) {
+      if (timeLeft <= 0) { //Doing Reset
+	     setQuestionMode(questionMode);
+	  } else { //Resuming or Starting
+	     changeLabel('STOP/PAUSE');
+		 timerMode = COUNTING;
+		 endTime = Date.now() / 1000 + timeLeft;
+		 timerInterrupt = setInterval(countdown, 100);
+		 countdown();
+	  }
+   } else if (timerMode == COUNTING) {
+	  clearInterval(timerInterrupt);
+      if (timeLeft <= 0) { //Reset
+	     setQuestionMode(questionMode);
+	  } else { //Pause
+	     changeLabel('RESUME');
+	  }
+	  timerMode = STOPPED;
+   }   
+}
+   
+ </script>
+ </body>
+ </html>
+
