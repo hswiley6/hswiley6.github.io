@@ -131,7 +131,8 @@ function beep(freq, shape, vol, dur) {
 function setQuestionMode(qm) {
    if (timerMode == STOPPED) {
       questionMode = qm;
-	  document.getElementById("qbutton"+(1-qm)).className = document.getElementById("qbutton"+(1-qm)).className.replace(" active", "");
+	  document.getElementById("qbutton0").className = document.getElementById("qbutton0").className.replace(" active", "");
+	  document.getElementById("qbutton1").className = document.getElementById("qbutton1").className.replace(" active", "");
 	  document.getElementById("qbutton"+qm).className += " active";
 	  timeLeft = qTime[qm];
 	  changeLabel('START');
