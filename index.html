@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html>
  <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" name="viewport">
   <title>UTRGV Science Bowl</title>
   <style>
 
 .timer {
-  width: 94%;
+  width: 94vw;
   background-color: #dddddd;
   border: 3;
   color: black;
-  padding: 20px;
+  padding: 2px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 36px;
+  font-size: 5vw;
   font-weight: bold;
-  margin: 4px 2px;
+  margin: 0vh 2vw 0vh;
   cursor: pointer;
   border-style: solid;
   border-radius: 6px;
@@ -26,14 +26,15 @@
   border: 3;
   background-color: white;
   width: 50%;
+  height: 30%;
   color: black;
-  padding: 10px;
+  padding: 1vh 4vw 4vw 3vh;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 120px;
+  font-size: 20vw;
   font-weight: bold;
-  margin: 4px 2px;
+  /* margin: 4px 2px; */
   cursor: pointer;
   border-style: solid;
 }  
@@ -41,11 +42,11 @@
   
 .button {
   color: black;
-  padding: 20px;
+  padding: 2vw;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 20px;
+  font-size: 6vw;
   font-weight: normal;
   margin: 4px 2px;
   cursor: pointer;
@@ -53,8 +54,8 @@
   border-width: thin; 
 }
 
-.button1 {background-color: #88ff88; width: 75%; font-size: 40px; font-weight: bold; border-width: thick;}
-.button2 {background-color: #aaaaff; width: 45%;}
+.button1 {background-color: #88ff88; width: 85%; height: 24%; font-size: 8vw; font-weight: bold; border-width: thick;}
+.button2 {background-color: #aaaaff; width: 35%; height: 15%; margin-top: 15px;}
 .button3 {float:right; font-size: 24px; padding: 2px; margin: 0px 0px; }
 .active {font-weight: bold; border-width: thick;}
 
@@ -62,15 +63,15 @@
 </head>
 
 <body onload="initialize()">
-<div class = "timer">REGIONAL SCIENCE BOWL TIMER<br><br>
-  <div class = "time_window" id="time_display">7.0</div>
-  <br><br>
+<div class = "timer">REGIONAL SCIENCE BOWL TIMER<br>
+  <div class = "time_window" id="time_display">7.0</div> 
+  <br>
   <button class = "button button1" id="startstop_button" onclick="startStop()">START</button>
-  <br><br>
+  <br>
   <button class = "button button2" onclick="setQuestionMode(TOSSUP)" id="qbutton0">TOSSUP</button>
   <button class = "button button2" onclick="setQuestionMode(BONUS)" id="qbutton1">BONUS</button>
   <br><button class = "button button3" id="soundButton" onclick="setSoundMode(!soundOn)">&#x1F50A</button>
-</div>  
+  </div>  
 <script>
 // Global variables
 var STOPPED = 0;
@@ -153,7 +154,7 @@ function countdown() {
 } 
 
 function displayTime() {
-   if (timeLeft <= 5.0) {document.getElementById("time_display").style.backgroundColor = "red";}
+   if ((timeLeft <= 5.0)&&(questionMode == BONUS)) {document.getElementById("time_display").style.backgroundColor = "red";}
    else {document.getElementById("time_display").style.backgroundColor = "white";}
    document.getElementById("time_display").innerHTML = timeLeft.toFixed(1);
 }
